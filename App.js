@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Platform, StyleSheet, Text, View } from 'react-native';
-import { Button, ButtonGroup, ListGroup, ListGroupItem } from 'reactstrap';
+import { Button, ButtonGroup, ListGroup, ListGroupItem, Badge } from 'reactstrap';
 //import { TextButton, RaisedTextButton } from 'react-native-material-buttons';
 
 const instructions = Platform.select({
@@ -19,17 +19,15 @@ export default class App extends Component {
     return (
       <View style={styles.container}>
         <ListGroup>
-          <ListGroupItem>Посадка</ListGroupItem>
-          <ListGroupItem>Остановка </ListGroupItem>
-          <ListGroupItem>Morbi leo risus</ListGroupItem>
-          <ListGroupItem>Porta ac consectetur ac</ListGroupItem>
-          <ListGroupItem>Vestibulum at eros</ListGroupItem>
+          <ListGroupItem> <Text>Посадка  </Text> <Badge pill><Text>22:30</Text></Badge> </ListGroupItem>
+          <ListGroupItem> <Text>Остановка</Text> <Badge pill><Text>22:32</Text></Badge> </ListGroupItem>
         </ListGroup>
         <ButtonGroup>
-          <Button>Left</Button>
-          <Button>Middle</Button>
-          <Button>Right</Button>
-        </ButtonGroup>s
+          <Button>Уборка</Button>
+          <Button>Борт-питание</Button>
+          <Button>Вода</Button>
+          <Button>МА-7</Button>
+        </ButtonGroup>
       </View>
     );
   }
