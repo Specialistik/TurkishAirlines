@@ -1,4 +1,3 @@
-import system
-import os
+import subprocess
 
-'C:\Users\Useer\AppData\Local\Android\Sdk\tools\emulator.exe' -avd Pixel_2_API_24
+print subprocess.check_output([r'C:\Users\Useer\AppData\Local\Android\Sdk\tools\emulator.exe', '-avd', 'Pixel_2_API_24'])
