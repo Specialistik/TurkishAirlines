@@ -1,42 +1,69 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
-import { Button, ButtonGroup, List, ListItem } from 'react-native-elements';
+import { ButtonGroup, List, ListItem, Button } from 'react-native-elements';
+import TAGrid from './ta-grid';
 
 export default class Main extends Component {
   constructor(props) {
     super(props);
-    /*
+    this.statuses = {
+      'plane_stop': 'Остановка',
+      'plane_open': 'Открытие',
+      'debarkment': 'Высадка',
+      'cleaning': 'Уборка',
+      'discharge': 'Разгрузка',
+      'refueling': 'Заправка',
+      'meals': 'Борт. питание',
+      'ma7': 'МА-7',
+      'water': 'Вода',
+      'readyness': 'Готовность',
+      'embarkation': 'Посадка',
+      'upload': 'Загрузка',
+      'plane_close': 'Закрытие',
+      'mooring_tractor': 'Швартовка тягача'
+    }
+
+    this.state = {
+      status_list : {
+        '22:30': 'Тест статуса'
+      }
+    }
+
     this.buttons = ['Уборка', 'Борт-питание', 'Вода', 'МА-7'];
-    down there, if you know what I mean <ButtonGroup buttons={this.buttons} />
-    */
-    /*
-    this.buttons = [
-      <Button title='Уборка' />,
-      <Button title='Борт-питание' />,
-      <Button title='Вода' />,
-      <Button title='МА-7' />
-    ];
-    */
-    this.updateIndex = this.updateIndex.bind(this)
+    this.updateStatus = this.updateStatus.bind(this)
   }
 
-  updateIndex (selectedIndex) {
-    this.setState({selectedIndex})
+  updateStatus(selectedIndex) {
+    var currentdate = new Date(); 
+    this.setState(prevState => ({
+      status_list: [...prevState.status_list[selectedIndex], currentdate.getHours() + ':' + currentdate.getMinutes() ]
+    }))
   }
+
+        /*
+        <ButtonGroup 
+          onPress={this.updateIndex}
+          buttons={this.buttons}
+        />
+
+                <Button 
+          key={"plane_stop"}
+          title={this.statuses["plane_stop"]}
+          onPress={this.updateIndex("plane_stop")}
+        />
+        */
 
   render() {
     return (
-        <View>
-            <List>
-                <ListItem title="Посадка   22:30" />
-                <ListItem title="Остановка 22:32" />
-            </List>
-
-            <Button title='Уборка' />,
-            <Button title='Борт-питание' />,
-            <Button title='Вода' />,
-            <Button title='МА-7' />
+      <View>
+        <TAGrid 
+          items={this.state.status_list}
+        />
+        <Button 
+          title={this.statuses["plane_stop"]}
+          onPress={() => this.updateStatus("plane_stop")}
+        />
       </View>
-    );
+    )
   }
 }
