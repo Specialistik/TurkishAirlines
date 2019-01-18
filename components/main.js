@@ -25,31 +25,27 @@ export default class Main extends Component {
 
     this.state = {
       status_list : {
-        '22:30': 'Тест статуса'
+        '22:30': 'Тест статуса',
       }
     }
 
-    this.buttons = ['Уборка', 'Борт-питание', 'Вода', 'МА-7'];
+    //this.buttons = ['Уборка', 'Борт-питание', 'Вода', 'МА-7'];
     this.updateStatus = this.updateStatus.bind(this)
   }
 
   updateStatus(selectedIndex) {
-    var currentdate = new Date(); 
-    this.setState(prevState => ({
-      status_list: [...prevState.status_list[selectedIndex], currentdate.getHours() + ':' + currentdate.getMinutes() ]
-    }))
+    let status_list = this.state.status_list;
+    let currentdate = new Date(); 
+    status_list[selectedIndex] = currentdate.getHours() + ':' + currentdate.getMinutes();
+    console.log('status list on update is ', status_list);
+    //var currentdate = new Date(); 
+    this.setState({status_list: status_list});
   }
 
         /*
         <ButtonGroup 
           onPress={this.updateIndex}
           buttons={this.buttons}
-        />
-
-                <Button 
-          key={"plane_stop"}
-          title={this.statuses["plane_stop"]}
-          onPress={this.updateIndex("plane_stop")}
         />
         */
 
@@ -60,6 +56,7 @@ export default class Main extends Component {
           items={this.state.status_list}
         />
         <Button 
+          key={"plane_stop"}
           title={this.statuses["plane_stop"]}
           onPress={() => this.updateStatus("plane_stop")}
         />
