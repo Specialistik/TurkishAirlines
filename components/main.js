@@ -24,30 +24,35 @@ export default class Main extends Component {
     }
 
     this.state = {
-      status_list : {
-        '22:30': 'Тест статуса',
-      }
+      status_list : [
+        {
+          timing: '22.30',
+          status: 'plane_stop'
+        }
+      ]
     }
-
-    //this.buttons = ['Уборка', 'Борт-питание', 'Вода', 'МА-7'];
     this.updateStatus = this.updateStatus.bind(this)
   }
 
-  updateStatus(selectedIndex) {
-    let status_list = this.state.status_list;
+  updateStatus(selectedStatus) {
+    console.log('before state change ', this.state);
     let currentdate = new Date(); 
-    status_list[selectedIndex] = currentdate.getHours() + ':' + currentdate.getMinutes();
-    console.log('status list on update is ', status_list);
-    //var currentdate = new Date(); 
-    this.setState({status_list: status_list});
-  }
+    let normalized_date = { 
+      timing: currentdate.getHours() + ':' + currentdate.getMinutes(),
+      status: selectedStatus
+    }
+    this.setState(prevState => ({
+      status_list: [...prevState.status_list], normalized_date
+    }));
+    console.log('after state change ', this.state);
 
-        /*
-        <ButtonGroup 
-          onPress={this.updateIndex}
-          buttons={this.buttons}
-        />
-        */
+    /*
+    <List>
+      <ListItem title="Остановка" badge={{ value: "22.30"}} />
+      <ListItem title="Открытие" badge={{ value: "22.32"}} />
+    </List>
+    */
+  }
 
   render() {
     return (
@@ -58,7 +63,7 @@ export default class Main extends Component {
         <Button 
           key={"plane_stop"}
           title={this.statuses["plane_stop"]}
-          onPress={() => this.updateStatus("plane_stop")}
+          onPress={() => this.updateStatus(this.key)}
         />
       </View>
     )
