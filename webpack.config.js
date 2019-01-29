@@ -1,7 +1,7 @@
 module.exports = {
-    entry: "./entry.js",
+    entry: "./src/entry.js",
     output: {
-        path: __dirname,
+        path: __dirname + '/public',
         filename: "bundle.js"
     },
     module: {
@@ -11,7 +11,11 @@ module.exports = {
                 exclude: /node_modules/,
                 loader: 'babel-loader',
                 query: {
-                    presets: ['env', 'stage-0', 'react']
+                    presets: [
+                        "@babel/preset-env",
+                        "@babel/preset-react",
+                        "@babel/preset-react-native"
+                    ]
                 }
             }
         ]

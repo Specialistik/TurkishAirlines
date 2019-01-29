@@ -138,14 +138,12 @@ export default class Main extends Component {
     return (
       <View>
         <View>
-          { this.state.status_grid.length > 0 ?
-            <List>
-              { this.state.status_grid.map((val,index) => (
-                  <ListItem key={index} title={val.status} badge={{ value: val.timing}} /> 
-                ))
-              }
-            </List> : <List></List> 
-          }
+          { (this.state.status_grid.length > 0) } ?
+              <List>
+                this.state.status_grid.map((val,index) => (
+                    <ListItem key={index} title={val.status} badge={{ value: val.timing}} /> 
+                )) 
+              </List> : <List />
         </View>
         
         <View>
