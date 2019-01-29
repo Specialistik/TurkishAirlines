@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
-import { Button, ListItem } from 'react-native-elements';
+import { View, Button, FlatList, Text } from 'react-native';
 
 export default class Main extends Component {
   constructor(props) {
@@ -87,11 +86,11 @@ export default class Main extends Component {
 
   // Зависимости статуса уже были кликнуты, пока только для одной зависимости
   dependenciesWerePicked(status) {
-    if (this.statuses[status]['depends'].length == 0) {
+    if (this.statuses[status]['depends'].length === 0) {
       return true;
     }
 
-    this.statuses[status]['depends'].map((val, index) => {
+    this.statuses[status]['depends'].forEach(function(val) {
       if (val == 'plane_stop') {
         console.log('status is ', status);
         console.log('used statuses are ', this.used_statuses);
@@ -101,6 +100,8 @@ export default class Main extends Component {
       if (this.used_statuses.includes(val)) {
         return true;
       }
+
+      return false;
     });
     return false;
   }
@@ -109,7 +110,7 @@ export default class Main extends Component {
     let button_list = [];
     this.used_statuses = [...this.used_statuses, selectedStatus];
 
-    this.statuses_flat.map((val, index) => {
+    this.statuses_flat.forEach(function(val) {
       if (val == 'plane_open') {
         console.log('dependencies were picked =', this.dependenciesWerePicked(val));
         console.log('status not used ', (!(this.used_statuses.includes(val))) )
@@ -139,10 +140,10 @@ export default class Main extends Component {
       <View>
         <View>
           { (this.state.status_grid.length > 0) } ?
-                this.state.status_grid.map((val,index) => (
-                    <ListItem key={index} title={val.status} badge={{ value: val.timing}} /> 
-                )) 
-              : <View />
+            <FlatList>
+                data={this.state.status_grid}
+                renderItem={({item}) => <Text>{item.timing}   {item.status}</Text>}
+            </FlatList> : <View />
         </View>
         
         <View>
