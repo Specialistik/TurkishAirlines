@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
-import { Button, List, ListItem } from 'react-native-elements';
+import { Button, ListItem } from 'react-native-elements';
 
 export default class Main extends Component {
   constructor(props) {
@@ -139,11 +139,10 @@ export default class Main extends Component {
       <View>
         <View>
           { (this.state.status_grid.length > 0) } ?
-              <List>
                 this.state.status_grid.map((val,index) => (
                     <ListItem key={index} title={val.status} badge={{ value: val.timing}} /> 
                 )) 
-              </List> : <List />
+              : <View />
         </View>
         
         <View>
