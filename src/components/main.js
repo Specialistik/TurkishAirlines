@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, ScrollView } from 'react-native';
+import { View } from 'react-native';
 import { Button, List, ListItem } from 'react-native-elements';
 
 export default class Main extends Component {
@@ -91,10 +91,9 @@ export default class Main extends Component {
       return true;
     }
 
-    let used_statuses = this.used_statuses;
-    let result = true;
+    let result = false;
     this.statuses[status]['depends'].forEach(function(val) {
-      if (!used_statuses.includes(val)) {
+      if (!this.used_statuses.includes(val)) {
         result = false;
       }
     });
@@ -103,13 +102,11 @@ export default class Main extends Component {
 
   updateStatus(selectedStatus) {
     let button_list = [];
-    this.used_statuses.push(selectedStatus);
-    var that = this;
-    //this.used_statuses = [...this.used_statuses, selectedStatus];
+    this.used_statuses = [...this.used_statuses, selectedStatus];
 
     this.statuses_flat.forEach(function(val) {
       // Если выбранного статуса нет в списке уже использованных И если выбранный статус был в зависимости у того, по которому проходим 
-      if ((!(that.used_statuses.includes(val))) && that.dependenciesWerePicked(val)) {
+      if ((!(this.used_statuses.includes(val))) && this.dependenciesWerePicked(val)) {
         console.log('button should appear ', val);
         button_list.push(val);
       } 
@@ -125,21 +122,30 @@ export default class Main extends Component {
       status_grid: [...prevState.status_grid, normalized_data],
       button_list: button_list,
     }));
+
+    /*
+          <View>
+          { (this.state.status_grid.length > 0) } ?
+            <FlatList>
+                data={this.state.status_grid}
+                renderItem={({item}) => <Text>{item.timing}   {item.status}</Text>}
+            </FlatList> : <View />
+        </View>
+    */
   }
 
   render() {
-    let list_thingy;
-    if (this.state.status_grid.length > 0) {
-      list_thingy = <List>
-        { this.state.status_grid.map((val,index) => (
-            <ListItem key={index} title={val.status} badge={{ value: val.timing}} />
-        ))}
-      </List>;
-    } else {
-      list_thingy = <View />;
-    }
     return (
       <View>
+        <View>
+          { (this.state.status_grid.length > 0) } ?
+              <List>
+                { this.state.status_grid.map((val,index) => (
+                    <ListItem key={index} title={val.status} badge={{ value: val.timing}} /> 
+                ))}
+              </List> : <View/>
+        </View>
+        
         <View>
           { this.state.button_list.map((val, index) => (
             <Button
@@ -150,11 +156,7 @@ export default class Main extends Component {
             ))
           }
         </View>
-
-        <ScrollView>
-          { list_thingy }
-        </ScrollView>
       </View>
-    );
+    )
   }
 }
