@@ -1,13 +1,34 @@
 import React, { Component } from 'react';
-import { View, ScrollView } from 'react-native';
-import { Button, List, ListItem } from 'react-native-elements';
+import { Button, View, ScrollView, StyleSheet } from 'react-native';
+import { ListItem } from 'react-native-elements';
+
+var styles = StyleSheet.create({
+  listItem: {
+    paddingTop: 5,
+    paddingBottom: 5
+  },
+  button: {
+    marginTop: 15,
+    marginBottom: 15,
+    backgroundColor: 'blue',
+    borderColor: 'white',
+    borderWidth: 1,
+    borderRadius: 32,
+    color: 'white',
+    fontSize: 24,
+    fontWeight: 'bold',
+    overflow: 'hidden',
+    padding: 24,
+    textAlign:'center',
+  }
+});
 
 export default class Main extends Component {
   constructor(props) {
     super(props);
     
     this.statuses = {
-      'plane_stop': {
+      'plane_stop': { 
         title: 'Остановка',
         'depends': []
       },
@@ -75,9 +96,10 @@ export default class Main extends Component {
 
     this.updateStatus = this.updateStatus.bind(this);
     this.dependenciesWerePicked = this.dependenciesWerePicked.bind(this);
+    this.addNullIfTimeIsFucked = this.addNullIfTimeIsFucked.bind(this);
   }
 
-  addNullIfThisIsWhatHaveBeenWanted(time) {
+  addNullIfTimeIsFucked(time) {
     if (time < 10) {
       return "0" + time;
     } else {
@@ -105,19 +127,17 @@ export default class Main extends Component {
     let button_list = [];
     this.used_statuses.push(selectedStatus);
     var that = this;
-    //this.used_statuses = [...this.used_statuses, selectedStatus];
 
     this.statuses_flat.forEach(function(val) {
-      // Если выбранного статуса нет в списке уже использованных И если выбранный статус был в зависимости у того, по которому проходим 
+      // Если выбранного статуса нет в списке уже использованных И выполнены зависимости
       if ((!(that.used_statuses.includes(val))) && that.dependenciesWerePicked(val)) {
-        console.log('button should appear ', val);
         button_list.push(val);
       } 
     });
 
     let currentdate = new Date(); 
     let normalized_data = { 
-      timing: currentdate.getHours() + '.' + this.addNullIfThisIsWhatHaveBeenWanted(currentdate.getMinutes()),
+      timing: currentdate.getHours() + '.' + this.addNullIfTimeIsFucked(currentdate.getMinutes()),
       status: this.statuses[selectedStatus].title
     };
 
@@ -128,31 +148,26 @@ export default class Main extends Component {
   }
 
   render() {
-    let list_thingy;
-    if (this.state.status_grid.length > 0) {
-      list_thingy = <List>
-        { this.state.status_grid.map((val,index) => (
-            <ListItem key={index} title={val.status} badge={{ value: val.timing}} />
-        ))}
-      </List>;
-    } else {
-      list_thingy = <View />;
-    }
     return (
       <View>
         <View>
           { this.state.button_list.map((val, index) => (
-            <Button
+            <Button 
               key={index}
               title={this.statuses[val].title}
               onPress={() => this.updateStatus(val)}
+              styles={styles.button}
             />
             ))
           }
         </View>
 
         <ScrollView>
-          { list_thingy }
+          { (this.state.status_grid.length > 0) ?
+            this.state.status_grid.map((val,index) => (
+              <ListItem key={index} title={val.status} badge={{ value: val.timing}} style={styles.listItem} />
+            )) : <View />
+          }
         </ScrollView>
       </View>
     );
