@@ -91,18 +91,12 @@ export default class Main extends Component {
     }
 
     this.statuses[status]['depends'].forEach(function(val) {
-      if (val == 'plane_stop') {
-        console.log('status is ', status);
-        console.log('used statuses are ', this.used_statuses);
-        console.log('used statuses include plane_stop ', this.used_statuses.includes(val));
-      }
-
       if (this.used_statuses.includes(val)) {
         return true;
       }
-
       return false;
     });
+
     return false;
   }
 
@@ -111,10 +105,6 @@ export default class Main extends Component {
     this.used_statuses = [...this.used_statuses, selectedStatus];
 
     this.statuses_flat.forEach(function(val) {
-      if (val == 'plane_open') {
-        console.log('dependencies were picked =', this.dependenciesWerePicked(val));
-        console.log('status not used ', (!(this.used_statuses.includes(val))) )
-      }
       // Если выбранного статуса нет в списке уже использованных И если выбранный статус был в зависимости у того, по которому проходим 
       if ((!(this.used_statuses.includes(val))) && this.dependenciesWerePicked(val)) {
         console.log('button should appear ', val);
@@ -138,6 +128,7 @@ export default class Main extends Component {
   render() {
     return (
       <View>
+        <Text>krevedko</Text>
         <View>
           { (this.state.status_grid.length > 0) } ?
             <FlatList>
